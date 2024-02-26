@@ -3,9 +3,6 @@
 ## Description
 Color selector and poker game created using Object Oriented Programming (OOP)
 
-## Visuals
-
-
 ## Installation
 - Clone this project to your preferred directory.
 - Install code editor extension "Live Server"
