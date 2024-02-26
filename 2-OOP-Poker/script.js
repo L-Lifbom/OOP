@@ -9,6 +9,7 @@ class Card {
 class Deck {
     constructor () {
         this.deck = [];
+        this.thrownCards = []
         this.generateDeck()
     }
 
@@ -32,10 +33,12 @@ class Deck {
         }
     }
 
-    thrownCards () {
-        cardPile = []
+    resetDeck() {
+        while (this.thrownCards.length > 0) {
+            this.deck.push(this.thrownCards.pop());
+        }
+        this.shuffleDeck();
     }
-
 }
 
 class Player {
@@ -56,9 +59,9 @@ class Player {
         }, 0)
     }
 
-    placeCards(a) {
+    placeCards(a, deck) {
         for (let i = 0; i < a; i++) {
-            cardPile.push(this.hand[this.hand.length - 1])
+            deck.thrownCards.push(this.hand[this.hand.length - 1])
             this.hand.pop()
         }
 
@@ -67,13 +70,10 @@ class Player {
         }
     }
 
-    placeAllCards(a) {
-        for (let i = 0; i < a; i++) {
-            cardPile.push(this.hand.a)
-            this.hand.pop()
+    placeAllCards(deck) {
+        while (this.hand.length > 0) {
+            deck.thrownCards.push(this.hand.pop());
         }
-
-
     }
 }
 
@@ -86,19 +86,21 @@ const player2 = new Player("Luke")
 player1.dealCards()
 player2.dealCards()
 
-console.log(`Player 1: ${player1.playerName} has these cards:\n${player1.hand.map(card =>`${card.name} of ${card.suit}`).join(',\n')} \nWith a total value of ${player1.calculateCards()}`)
-console.log(`Player 2: ${player2.playerName} has these cards:\n${player2.hand.map(card =>`${card.name} of ${card.suit}`).join(',\n')} \nWith a total value of ${player2.calculateCards()}`)
+console.log(`Player 1: ${player1.playerName} has these cards:\n${player1.hand.map(card =>`${card.name} of ${card.suit}`).join(',\n')} \nWith a total value of: ${player1.calculateCards()}`)
+console.log(`Player 2: ${player2.playerName} has these cards:\n${player2.hand.map(card =>`${card.name} of ${card.suit}`).join(',\n')} \nWith a total value of: ${player2.calculateCards()}`)
 console.log("Remaining cards in deck: ", deck.deck.length)
 
-player1.placeCards(2)
-player2.placeCards(2)
-console.log(`${player1.playerName} threw and drew two new cards:\n${player1.hand.map(card =>`${card.name} of ${card.suit}`).join(',\n')} \nWith a total value of ${player1.calculateCards()}`)
-console.log(`${player2.playerName} threw and drew two new cards:\n${player2.hand.map(card =>`${card.name} of ${card.suit}`).join(',\n')} \nWith a total value of ${player2.calculateCards()}`)
+player1.placeCards(2, deck)
+player2.placeCards(2, deck)
+console.log(`${player1.playerName} threw and drew two new cards:\n${player1.hand.map(card =>`${card.name} of ${card.suit}`).join(',\n')} \nWith a total value of: ${player1.calculateCards()}`)
+console.log(`${player2.playerName} threw and drew two new cards:\n${player2.hand.map(card =>`${card.name} of ${card.suit}`).join(',\n')} \nWith a total value of: ${player2.calculateCards()}`)
 console.log("Remaining cards in deck: ", deck.deck.length)
 
-player1.placeAllCards(player1.hand.length)
-player2.placeAllCards(player2.hand.length)
+player1.placeAllCards(deck)
+player2.placeAllCards(deck)
 
-console.log(player1)
-console.log(player2)
+console.log(`${player1.playerName} threw all cards\nand now has a total value of: ${player1.calculateCards()}`)
+console.log(`${player2.playerName} threw all cards\nand now has a total value of: ${player2.calculateCards()}`)
 console.log("Remaining cards in deck: ", deck.deck.length)
+deck.resetDeck()
+console.log("All cards are returned to deck: ", deck.deck.length)
